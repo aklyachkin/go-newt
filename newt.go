@@ -314,16 +314,13 @@ func Button(left, top int, text string) Component {
     return c
 }
 
-func Checkbox(left, top int, text string, defValue int, seq, result string) Component {
+func Checkbox(left, top int, text string, defValue, seq string, result ResultStr) Component {
     var c Component
     t := C.CString(text)
     s := C.CString(seq)
-    r := C.CString(result)
     defer C.free(unsafe.Pointer(t))
     defer C.free(unsafe.Pointer(s))
-    defer C.free(unsafe.Pointer(r))
-    a := C.newtCheckbox(C.int(left), C.int(top), t, C.char(defValue), s, r)
-    c.c = a
+    c.c = C.newtCheckbox(C.int(left), C.int(top), t, C.char(defValue[0]), s, result.value)
     return c
 }
 
@@ -344,7 +341,7 @@ func Radiobutton(left, top int, text string, isDefault int, prevButton *Componen
     var c Component
     t := C.CString(text)
     defer C.free(unsafe.Pointer(t))
-    if prevButton != nil {
+    if prevButton == nil {
         c.c = C.newtRadiobutton(C.int(left), C.int(top), t, C.int(isDefault), nil)
     } else {
         c.c = C.newtRadiobutton(C.int(left), C.int(top), t, C.int(isDefault), prevButton.c)
@@ -352,13 +349,13 @@ func Radiobutton(left, top int, text string, isDefault int, prevButton *Componen
     return c
 }
 
-func RadioGetCurrent(setMember *Component) Component {
+func RadioGetCurrent(setMember Component) Component {
     var c Component
     c.c = C.newtRadioGetCurrent(setMember.c)
     return c
 }
 
-func RadioSetCurrent(setMember *Component) {
+func RadioSetCurrent(setMember Component) {
     C.newtRadioSetCurrent(setMember.c)
 }
 
