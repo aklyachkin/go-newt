@@ -96,6 +96,76 @@ const (
     FlagCheckbox = C.NEWT_FLAG_CHECKBOX
     FLAG_SHOWCURSOR = C.NEWT_FLAG_SHOWCURSOR
     FlagShowCursor = C.NEWT_FLAG_SHOWCURSOR
+
+    FD_READ = C.NEWT_FD_READ
+    FD_WRITE = C.NEWT_FD_WRITE
+    FD_EXCEPT = C.NEWT_FD_EXCEPT
+
+    CHECKBOXTREE_UNSELECTABLE = C.NEWT_CHECKBOXTREE_UNSELECTABLE
+    CHECKBOXTREE_HIDE_BOX = C.NEWT_CHECKBOXTREE_HIDE_BOX
+    CHECKBOXTREE_COLLAPSED = C.NEWT_CHECKBOXTREE_COLLAPSED
+    CHECKBOXTREE_EXPANDED = C.NEWT_CHECKBOXTREE_EXPANDED
+    CHECKBOXTREE_UNSELECTED = C.NEWT_CHECKBOXTREE_UNSELECTED
+    CHECKBOXTREE_SELECTED = C.NEWT_CHECKBOXTREE_SELECTED
+
+    LISTBOX_RETURNEXIT = C.NEWT_LISTBOX_RETURNEXIT
+    ENTRY_SCROLL = C.NEWT_ENTRY_SCROLL
+    ENTRY_HIDDEN = C.NEWT_ENTRY_HIDDEN
+    ENTRY_RETURNEXIT = C.NEWT_ENTRY_RETURNEXIT
+    ENTRY_DISABLED = C.NEWT_ENTRY_DISABLED
+
+    TEXTBOX_WRAP = C.NEWT_TEXTBOX_WRAP
+    TEXTBOX_SCROLL = C.NEWT_TEXTBOX_SCROLL
+    FORM_NOF12 = C.NEWT_FORM_NOF12
+
+    ANCHOR_LEFT = C.NEWT_ANCHOR_LEFT
+    ANCHOR_RIGHT = C.NEWT_ANCHOR_RIGHT
+    ANCHOR_TOP = C.NEWT_ANCHOR_TOP
+    ANCHOR_BOTTOM = C.NEWT_ANCHOR_BOTTOM
+
+    GRID_FLAG_GROWX = C.NEWT_GRID_FLAG_GROWX
+    GRID_FLAG_GROWY = C.NEWT_GRID_FLAG_GROWY
+)
+
+const (
+    KEY_TAB = C.NEWT_KEY_TAB
+    KEY_ENTER = C.NEWT_KEY_ENTER
+    KEY_SUSPEND = C.NEWT_KEY_SUSPEND
+    KEY_ESCAPE = C.NEWT_KEY_ESCAPE
+    KEY_RETURN = C.NEWT_KEY_RETURN
+    KEY_EXTRA_BASE = C.NEWT_KEY_EXTRA_BASE
+    KEY_UP = C.NEWT_KEY_UP
+    KEY_DOWN = C.NEWT_KEY_DOWN
+    KEY_LEFT = C.NEWT_KEY_LEFT
+    KEY_RIGHT = C.NEWT_KEY_RIGHT
+    KEY_BKSPC = C.NEWT_KEY_BKSPC
+    KEY_DELETE = C.NEWT_KEY_DELETE
+    KEY_HOME = C.NEWT_KEY_HOME
+    KEY_END = C.NEWT_KEY_END
+    KEY_UNTAB = C.NEWT_KEY_UNTAB
+    KEY_PGUP = C.NEWT_KEY_PGUP
+    KEY_PGDN = C.NEWT_KEY_PGDN
+    KEY_INSERT = C.NEWT_KEY_INSERT
+    KEY_F1 = C.NEWT_KEY_F1
+    KEY_F2 = C.NEWT_KEY_F2
+    KEY_F3 = C.NEWT_KEY_F3
+    KEY_F4 = C.NEWT_KEY_F4
+    KEY_F5 = C.NEWT_KEY_F5
+    KEY_F6 = C.NEWT_KEY_F6
+    KEY_F7 = C.NEWT_KEY_F7
+    KEY_F8 = C.NEWT_KEY_F8
+    KEY_F9 = C.NEWT_KEY_F9
+    KEY_F10 = C.NEWT_KEY_F10
+    KEY_F11 = C.NEWT_KEY_F11
+    KEY_F12 = C.NEWT_KEY_F12
+    KEY_RESIZE = C.NEWT_KEY_RESIZE
+    KEY_ERROR = C.NEWT_KEY_ERROR
+)
+
+const (         // newtGridElement
+    GRID_EMPTY = iota
+    GRID_COMPONENT
+    GRID_SUBGRID
 )
 
 type Colors struct {
@@ -126,6 +196,10 @@ type Component struct {
     c C.newtComponent
     g C.newtGrid
 }
+
+type ExitStruct C.struct_newtExitStruct
+
+type WinEntry C.struct_newtWinEntry
 
 type SuspendCallback func([]byte)
 type Callback func(Component, []byte)
@@ -434,6 +508,10 @@ func ListboxAppendEntry(c Component, text string, data uintptr) int {
     t := C.CString(text)
     defer C.free(unsafe.Pointer(t))
     return int(C.newtListboxAppendEntry(c.c, t, unsafe.Pointer(data)))
+}
+
+func ListboxAddEntry(c Component, text string, data uintptr) int {
+    return ListboxAppendEntry(c, text, data)
 }
 
 func ListboxInsertEntry(c Component, text string, data, key uintptr) int {
