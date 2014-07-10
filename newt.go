@@ -253,6 +253,28 @@ func colors2newt(c Colors) C.struct_newtColors {
     return n
 }
 
+func arr2bytes(array uintptr, size int) []byte {
+    var bytes = make([]byte, size)
+
+    for i := 0; i < len(bytes); i++ {
+        bytes[i] = byte(*(*C.uchar)(unsafe.Pointer(array)))
+        array ++
+    }
+
+    return bytes
+}
+
+func bytes2arr(bytes []byte) uintptr {
+    var array = unsafe.Pointer(C.calloc(C.size_t(len(bytes)), 1))
+    var arrayptr = uintptr(array)
+
+    for i := 0; i < len(bytes); i++ {
+        *(*C.uchar)(unsafe.Pointer(arrayptr)) = C.uchar(bytes[i])
+        arrayptr ++
+    }
+
+    return uintptr(array)
+}
 
 func Init() int {
     return int(C.newtInit())
