@@ -21,6 +21,7 @@ import "C"
 
 import (
     "unsafe"
+    "reflect"
 )
 
 const (
@@ -564,11 +565,19 @@ func ListboxGetEntry(c Component, num int) (string, uintptr) {
     return C.GoString(text), uintptr(data)
 }
 
-func ListboxGetSelection(c Component) (int, *uintptr) {
+func ListboxGetSelection(c Component) (int, []uintptr) {
     var numitems C.int
+    var i []uintptr
     items := C.newtListboxGetSelection(c.c, &numitems)
-    i := uintptr(*items)
-    return int(numitems), &i
+    if items != nil {
+        hdr := reflect.SliceHeader{
+            Data: uintptr(unsafe.Pointer(items)),
+            Len: int(numitems),
+            Cap: int(numitems),
+        }
+        i = *(*[]uintptr)(unsafe.Pointer(&hdr))
+    }
+    return int(numitems), i
 }
 
 func ListboxClearSelection(c Component) {
