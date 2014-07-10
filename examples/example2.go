@@ -11,8 +11,7 @@ func main() {
     b1 := newt.Button(10, 1, "Ok")
     b2 := newt.CompactButton(22, 2, "Cancel")
     form := newt.Form(nil, nil, 0)
-    newt.FormAddComponent(form, b1)
-    newt.FormAddComponent(form, b2)
+    newt.FormAddComponents(form, b1, b2)
 
     newt.RunForm(form)
 

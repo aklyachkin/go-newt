@@ -638,8 +638,10 @@ func FormAddComponent(form, c Component) {
     C.newtFormAddComponent(form.c, c.c)
 }
 
-func FormAddComponents(form Component, args ...interface{}) {
-    panic("not implemented")
+func FormAddComponents(form Component, args ...Component) {
+    for _, v := range args {
+        FormAddComponent(form, v)
+    }
     // C.newtFormAddComponents(form.c, args)
 }
 
@@ -678,14 +680,12 @@ func FormSetScrollPosition(c Component, position int) {
     C.newtFormSetScrollPosition(c.c, C.int(position))
 }
 
-func Entry(left, top int, initialValue string, width, flags int) (Component, string) {
+func Entry(left, top int, initialValue string, width int, result *ResultStr, flags int) Component {
+    var c Component
     iv := C.CString(initialValue)
     defer C.free(unsafe.Pointer(iv))
-    var c Component
-    var res *C.char
-    defer C.free(unsafe.Pointer(res))
-    c.c = C.newtEntry(C.int(left), C.int(top), iv, C.int(width), &res, C.int(flags))
-    return c, C.GoString(res)
+    c.c = C.newtEntry(C.int(left), C.int(top), iv, C.int(width), (**C.char)(&result.value), C.int(flags))
+    return c
 }
 
 func EntrySet(c Component, value string, cursorAtEnd int) {
