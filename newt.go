@@ -94,6 +94,8 @@ const (
     FlagSelected = C.NEWT_FLAG_SELECTED
     FLAG_CHECKBOX = C.NEWT_FLAG_CHECKBOX
     FlagCheckbox = C.NEWT_FLAG_CHECKBOX
+    FLAG_PASSWORD = C.NEWT_FLAG_PASSWORD
+    FlagPassword = C.NEWT_FLAG_PASSWORD
     FLAG_SHOWCURSOR = C.NEWT_FLAG_SHOWCURSOR
     FlagShowCursor = C.NEWT_FLAG_SHOWCURSOR
 
@@ -391,7 +393,12 @@ func Button(left, top int, text string) Component {
 func Checkbox(left, top int, text string, defValue, seq string, result ResultStr) Component {
     var c Component
     t := C.CString(text)
-    s := C.CString(seq)
+    var s *C.char
+    if seq == "" {
+        s = nil
+    } else {
+        s = C.CString(seq)
+    }
     defer C.free(unsafe.Pointer(t))
     defer C.free(unsafe.Pointer(s))
     c.c = C.newtCheckbox(C.int(left), C.int(top), t, C.char(defValue[0]), s, result.value)
@@ -673,12 +680,14 @@ func ReflowText(text string, width, flexDown, flexUp int) (string, int, int) {
     return C.GoString(r), int(*actualWidth), int(*actualHeight)
 }
 
-func Form(vertBar *Component, helpTag []byte, flags int) Component {
+func Form(vertBar *Component, helpTag string, flags int) Component {
     var c Component
+    t := C.CString(helpTag)
+    defer C.free(unsafe.Pointer(t))
     if vertBar != nil {
-        c.c = C.newtForm(vertBar.c, unsafe.Pointer(&helpTag), C.int(flags))
+        c.c = C.newtForm(vertBar.c, unsafe.Pointer(t), C.int(flags))
     } else {
-        c.c = C.newtForm(nil, unsafe.Pointer(&helpTag), C.int(flags))
+        c.c = C.newtForm(nil, unsafe.Pointer(t), C.int(flags))
     }
     return c
 }

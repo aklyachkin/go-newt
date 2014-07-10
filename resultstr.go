@@ -2,6 +2,7 @@ package newt
 
 /*
 #include <stdlib.h>
+#include <string.h>
 */
 import "C"
 import "unsafe"
@@ -13,6 +14,7 @@ type ResultStr struct {
 func NewResultStr() ResultStr {
     var r ResultStr
     r.value = (*C.char)(C.malloc(1024))
+    C.memset(unsafe.Pointer(r.value), 0, 1024)
     return r
 }
 

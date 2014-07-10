@@ -20,7 +20,7 @@ func main() {
 
     button := newt.Button(1, 7, "Ok")
 
-    form := newt.Form(nil, nil, 0)
+    form := newt.Form(nil, "", 0)
     newt.FormAddComponent(form, checkbox)
     for i := range rb {
         newt.FormAddComponent(form, rb[i])

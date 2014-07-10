@@ -18,7 +18,7 @@ func main() {
 
     newt.OpenWindow(10, 5, 37, uint(newt.TextboxGetNumLines(text) + 7), "Textboxes")
 
-    form := newt.Form(nil, nil, 0)
+    form := newt.Form(nil, "", 0)
     newt.FormAddComponents(form, text, button)
 
     newt.RunForm(form)
