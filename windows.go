@@ -80,6 +80,6 @@ func WinMenu(title, text string, suggestedWidth, flexDown, flexUp, maxListHeight
     }()
 
     var listItem C.int
-    r := C.newtWinMenu(t1, t2, C.int(suggestedWidth), C.int(flexDown), C.int(flexUp), C.int(maxListHeight), (**C.char)(unsafe.Pointer(&Citems[0])), &listItem, b1, nil)
+    // r := C.newtWinMenu(t1, t2, C.int(suggestedWidth), C.int(flexDown), C.int(flexUp), C.int(maxListHeight), (**C.char)(unsafe.Pointer(&Citems[0])), &listItem, b1, nil)
     return int(r), int(listItem)
 }

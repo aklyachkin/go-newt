@@ -10,10 +10,6 @@ package newt
 */
 import "C"
 
-import (
-    "unsafe"
-)
-
 func Scale(left, top, width int, fullValue int64) Component {
     var c Component
     c.c = C.newtScale(C.int(left), C.int(top), C.int(width), C.longlong(fullValue))

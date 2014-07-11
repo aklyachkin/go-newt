@@ -12,6 +12,7 @@ import "C"
 
 import (
     "unsafe"
+    "reflect"
 )
 
 func Listbox(left, top, height, flags int) Component {

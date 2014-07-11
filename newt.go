@@ -28,7 +28,6 @@ import "C"
 
 import (
     "unsafe"
-    "reflect"
 )
 
 const (

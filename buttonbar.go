@@ -11,10 +11,6 @@ package newt
 */
 import "C"
 
-import (
-    "unsafe"
-)
-
 func ButtonBarV(button1 string, b1 Component) {
     panic("not implemented")
 }

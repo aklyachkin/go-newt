@@ -101,5 +101,5 @@ func FormSetScrollPosition(c Component, position int) {
 }
 
 func FormDestroy(c Component) {
-    C.newtformDestroy(c.c)
+    C.newtFormDestroy(c.c)
 }
