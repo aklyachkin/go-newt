@@ -711,10 +711,11 @@ func TextboxSetColors(c Component, normal, active int) {
 func ReflowText(text string, width, flexDown, flexUp int) (string, int, int) {
     t := C.CString(text)
     defer C.free(unsafe.Pointer(t))
-    var actualWidth, actualHeight *C.int
-    r := C.newtReflowText(t, C.int(width), C.int(flexDown), C.int(flexUp), actualWidth, actualHeight)
+    var actualWidth, actualHeight C.int
+    r := C.newtReflowText(t, C.int(width), C.int(flexDown), C.int(flexUp), &actualWidth, &actualHeight)
     defer C.free(unsafe.Pointer(r))
-    return C.GoString(r), int(*actualWidth), int(*actualHeight)
+    s := C.GoString(r)
+    return s, int(actualWidth), int(actualHeight)
 }
 
 func Form(vertBar *Component, helpTag string, flags int) Component {
