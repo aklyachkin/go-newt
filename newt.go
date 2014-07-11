@@ -923,8 +923,15 @@ func GridSimpleWindow(text, middle, buttons Component) Component {
     return c
 }
 
-func GridSetField(c Component, col, row int, typ uint32, val uintptr, padLeft, padTop, padRight, padBottom, anchor, flags int) {
-    C.newtGridSetField(c.g, C.int(col), C.int(row), typ, unsafe.Pointer(val), C.int(padLeft), C.int(padTop), C.int(padRight), C.int(padBottom), C.int(anchor), C.int(flags))
+func GridSetField(c Component, col, row int, typ uint32, val Component, padLeft, padTop, padRight, padBottom, anchor, flags int) {
+    switch typ {
+    case GRID_COMPONENT:
+        C.newtGridSetField(c.g, C.int(col), C.int(row), typ, unsafe.Pointer(val.c), C.int(padLeft), C.int(padTop), C.int(padRight), C.int(padBottom), C.int(anchor), C.int(flags))
+    case GRID_SUBGRID:
+        C.newtGridSetField(c.g, C.int(col), C.int(row), typ, unsafe.Pointer(val.g), C.int(padLeft), C.int(padTop), C.int(padRight), C.int(padBottom), C.int(anchor), C.int(flags))
+    case GRID_EMPTY:
+        C.newtGridSetField(c.g, C.int(col), C.int(row), typ, nil, C.int(padLeft), C.int(padTop), C.int(padRight), C.int(padBottom), C.int(anchor), C.int(flags))
+    }
 }
 
 func GridPlace(c Component, left, top int) {
