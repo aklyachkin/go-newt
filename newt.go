@@ -4,17 +4,24 @@ package newt
 #cgo CFLAGS: -I/opt/local/include
 #cgo LDFLAGS: -L/opt/local/lib -lnewt
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <newt.h>
+
+newtCallback helpCallback;
 
 void n_setSuspendCallback(void *cb, void *data)
 {
     newtSetSuspendCallback(cb, data);
 }
 
-void n_setHelpCallback(void *cb)
+void n_HelpCallback(newtComponent c, void *data)
 {
-    newtSetHelpCallback(cb);
+    printf("n_setHelpCallback()\n");
+    if (helpCallback != NULL) {
+        helpCallback(c, data);
+    }
+    return;
 }
 */
 import "C"
@@ -200,12 +207,10 @@ type Component struct {
     g C.newtGrid
 }
 
-type ExitStruct C.struct_newtExitStruct
-
 type WinEntry C.struct_newtWinEntry
 
 type SuspendCallback func([]byte)
-type Callback func(Component, []byte)
+type Callback func(*Component, []byte)
 
 func colors2newt(c Colors) C.struct_newtColors {
     var n C.struct_newtColors
@@ -350,12 +355,13 @@ func Suspend() {
     C.newtSuspend()
 }
 
-func SetSuspendCallback(cb SuspendCallback, data []byte) {
-    C.n_setSuspendCallback(unsafe.Pointer(&cb), unsafe.Pointer(&data))
+func SetSuspendCallback(cb *SuspendCallback, data *[]byte) {
+    C.n_setSuspendCallback(unsafe.Pointer(cb), unsafe.Pointer(data))
 }
 
-func SetHelpCallback(cb Callback) {
-    C.n_setHelpCallback(unsafe.Pointer(&cb))
+func SetHelpCallback(cb *Callback) {
+    C.newtSetHelpCallback(C.newtCallback(unsafe.Pointer(C.n_HelpCallback)))
+    C.helpCallback = *(*C.newtCallback)(unsafe.Pointer(cb))
 }
 
 func Resume() int {
@@ -774,9 +780,11 @@ func RunForm(form Component) Component {
     return c
 }
 
-func FormRun(form Component) {
+func FormRun(form Component) ExitStruct {
     // panic
-    C.newtFormRun(form.c, nil)
+    var es ExitStruct
+    C.newtFormRun(form.c, &es.es)
+    return es
 }
 
 func DrawForm(form Component) {
