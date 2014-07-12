@@ -113,27 +113,49 @@ func WinMenu(title, text string, suggestedWidth, flexDown, flexUp, maxListHeight
     PopWindow()
 
     return rc, int(listItem)
+}
 
-    //t1 := C.CString(title)
-    //t2 := C.CString(text)
-    //b1 := C.CString(button1)
-    //defer func() {
-    //    C.free(unsafe.Pointer(t1))
-    //    C.free(unsafe.Pointer(t2))
-    //    C.free(unsafe.Pointer(b1))
-    //}()
-    //Citems := make([]*C.char, len(items))
-    //for i, v := range(items) {
-    //    Citems[i] = C.CString(v)
-   // }
-    //defer func() {
-    //    for i := range(Citems) {
-    //        C.free(unsafe.Pointer(Citems[i]))
-    //    }
-    //}()
+func WinEntries(title, text string, suggestedWidth, flexDown, flexUp, dataWidth int, items []WinEntry, button1 ...string) int {
+    textw := TextboxReflowed(-1, -1, text, suggestedWidth, flexDown, flexUp, 0)
+    _ = textw
+    buttons := make([]Component, len(button1))
+    buttonBar := CreateGrid(len(button1), 1)
 
-    //panic("not implemented")
-    //var listItem C.int
-    // r := C.newtWinMenu(t1, t2, C.int(suggestedWidth), C.int(flexDown), C.int(flexUp), C.int(maxListHeight), (**C.char)(unsafe.Pointer(&Citems[0])), &listItem, b1, nil)
-    // return int(r), int(listItem)
+    for i, v := range button1 {
+        j := 1
+        if i == 0 { j = 0 }
+        buttons[i] = Button(-1, -1, v)
+        GridSetField(buttonBar, i, 0, GRID_COMPONENT, buttons[i], j, 0, 0, 0, 0, 0)
+    }
+
+    subgrid := CreateGrid(2, len(items))
+    for i, v := range items {
+        GridSetField(subgrid, 0, i, GRID_COMPONENT, Label(-1, -1, v.Text()), 0, 0, 0, 0, ANCHOR_LEFT, 0)
+        GridSetField(subgrid, 1, i, GRID_COMPONENT, Entry(-1, -1, v.Value(), dataWidth, &v.dv, v.Flags()), 1, 0, 0, 0, 0, 0)
+    }
+
+    grid := CreateGrid(1, 3)
+    form := Form(nil, "", 0)
+    GridSetField(grid, 0, 0, GRID_COMPONENT, textw, 0, 0, 0, 0, ANCHOR_LEFT, 0)
+    GridSetField(grid, 0, 1, GRID_SUBGRID, subgrid, 0, 1, 0, 0, 0, 0)
+    GridSetField(grid, 0, 2, GRID_SUBGRID, buttonBar, 0, 1, 0, 0, 0, GRID_FLAG_GROWX)
+    GridAddComponentsToForm(grid, form, 1)
+    GridWrappedWindow(grid, title)
+    GridFree(grid, 1)
+
+    result := RunForm(form)
+
+    rc := 0
+    for _, v := range(buttons) {
+        if result == v {
+            break
+        }
+        rc++
+    }
+    if rc == len(buttons) { rc = 0 } else { rc++ }
+
+    FormDestroy(form)
+    PopWindow()
+
+    return rc
 }
