@@ -206,8 +206,6 @@ type Component struct {
     g C.newtGrid
 }
 
-type WinEntry C.struct_newtWinEntry
-
 type SuspendCallback func([]byte)
 type Callback func(*Component, []byte)
 
