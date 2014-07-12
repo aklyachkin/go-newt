@@ -18,6 +18,14 @@ func NewResultStr() ResultStr {
     return r
 }
 
+func (r ResultStr) Set(s string) {
+    if len(s) <= 1024 {
+        s1 := C.CString(s)
+        defer C.free(unsafe.Pointer(s1))
+        C.strncpy(r.value, s1, C.size_t(len(s)))
+    }
+}
+
 func (r ResultStr) String() string {
     return C.GoString(r.value)
 }
