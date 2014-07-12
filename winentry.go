@@ -25,12 +25,12 @@ func NewWinEntry(text string, flags int) WinEntry {
     C.strncpy(we.we.text, t, C.size_t(len(text)))
     we.we.value = nil
     we.we.flags = C.int(flags)
+    we.dv = NewResultStr()
     return we
 }
 
 func NewWinEntryDef(text, defaultValue string, flags int) WinEntry {
     we := NewWinEntry(text, flags)
-    we.dv = NewResultStr()
     we.dv.Set(defaultValue)
     we.we.value = &we.dv.value
     return we
@@ -47,4 +47,9 @@ func (we WinEntry) Value() string {
 
 func (we WinEntry) Flags() int {
     return int(we.we.flags)
+}
+
+func (we WinEntry) Destroy() {
+    we.dv.Destroy()
+    C.free(unsafe.Pointer(we.we.text))
 }
