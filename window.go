@@ -101,8 +101,8 @@ func WinMenu(title, text string, suggestedWidth, flexDown, flexUp, maxListHeight
     listItem = int(listItemC)
 
     rc := 0
-    for _, v := range(buttons) {
-        if result == v {
+    for i, _ := range(buttons) {
+        if result == buttons[i] {
             break
         }
         rc++
@@ -131,7 +131,7 @@ func WinEntries(title, text string, suggestedWidth, flexDown, flexUp, dataWidth 
     subgrid := CreateGrid(2, len(items))
     for i, v := range items {
         GridSetField(subgrid, 0, i, GRID_COMPONENT, Label(-1, -1, v.Text()), 0, 0, 0, 0, ANCHOR_LEFT, 0)
-        GridSetField(subgrid, 1, i, GRID_COMPONENT, Entry(-1, -1, v.Value(), dataWidth, &v.dv, v.Flags()), 1, 0, 0, 0, 0, 0)
+        GridSetField(subgrid, 1, i, GRID_COMPONENT, Entry(-1, -1, v.Value(), dataWidth, &(v.dv), v.Flags()), 1, 0, 0, 0, 0, 0)
     }
 
     grid := CreateGrid(1, 3)
@@ -146,8 +146,8 @@ func WinEntries(title, text string, suggestedWidth, flexDown, flexUp, dataWidth 
     result := RunForm(form)
 
     rc := 0
-    for _, v := range(buttons) {
-        if result == v {
+    for i, _ := range(buttons) {
+        if result == buttons[i] {
             break
         }
         rc++
