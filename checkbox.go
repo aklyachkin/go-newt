@@ -15,7 +15,7 @@ import (
 )
 
 /* Components */
-func Checkbox(left, top int, text string, defValue, seq string, result ResultStr) Component {
+func Checkbox(left, top int, text string, defValue, seq string, result *ResultStr) Component {
     var c Component
     t := C.CString(text)
     var s *C.char
