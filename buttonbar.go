@@ -11,11 +11,19 @@ package newt
 */
 import "C"
 
-func ButtonBarV(button1 string, b1 Component) {
-    panic("not implemented")
+type TButtonbar struct {
+    text string
+    button Component
 }
 
-func ButtonBar(button1 string, b1 Component) {
-    panic("not implemented")
+func ButtonBar(bbar ...*TButtonbar) Component {
+    grid := CreateGrid(len(bbar), 1)
+
+    for i, _ := range bbar {
+        bbar[i].button = Button(-1, -1, bbar[i].text)
+        GridSetField(grid, i, 0, GRID_COMPONENT, bbar[i].button, 1, 0, 0, 0, 0, 0)
+    }
+
+    return grid
 }
 
