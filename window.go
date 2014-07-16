@@ -115,7 +115,7 @@ func WinMenu(title, text string, suggestedWidth, flexDown, flexUp, maxListHeight
     return rc, int(listItem)
 }
 
-func WinEntries(title, text string, suggestedWidth, flexDown, flexUp, dataWidth int, items []WinEntry, button1 ...string) int {
+func WinEntries(title, text string, suggestedWidth, flexDown, flexUp, dataWidth int, items *[]WinEntry, button1 ...string) int {
     textw := TextboxReflowed(-1, -1, text, suggestedWidth, flexDown, flexUp, 0)
     _ = textw
     buttons := make([]Component, len(button1))
@@ -128,10 +128,13 @@ func WinEntries(title, text string, suggestedWidth, flexDown, flexUp, dataWidth 
         GridSetField(buttonBar, i, 0, GRID_COMPONENT, buttons[i], j, 0, 0, 0, 0, 0)
     }
 
-    subgrid := CreateGrid(2, len(items))
-    for i, v := range items {
-        GridSetField(subgrid, 0, i, GRID_COMPONENT, Label(-1, -1, v.Text()), 0, 0, 0, 0, ANCHOR_LEFT, 0)
-        GridSetField(subgrid, 1, i, GRID_COMPONENT, Entry(-1, -1, v.Value(), dataWidth, &(v.dv), v.Flags()), 1, 0, 0, 0, 0, 0)
+    subgrid := CreateGrid(2, len(*items))
+    a := make([]ResultStr, len(*items))
+    for i, _ := range *items {
+        l2 := Label(-1, -1, (*items)[i].Text())
+        e2 := Entry(-1, -1, (*items)[i].Value(), dataWidth, &a[i], (*items)[i].Flags())
+        GridSetField(subgrid, 0, i, GRID_COMPONENT, l2, 0, 0, 0, 0, ANCHOR_LEFT, 0)
+        GridSetField(subgrid, 1, i, GRID_COMPONENT, e2, 1, 0, 0, 0, 0, 0)
     }
 
     grid := CreateGrid(1, 3)
@@ -153,6 +156,10 @@ func WinEntries(title, text string, suggestedWidth, flexDown, flexUp, dataWidth 
         rc++
     }
     if rc == len(buttons) { rc = 0 } else { rc++ }
+
+    for i, _ := range a {
+        (*items)[i].dv.Set(a[i].String())
+    }
 
     FormDestroy(form)
     PopWindow()
