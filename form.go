@@ -78,7 +78,6 @@ func RunForm(form Component) Component {
 }
 
 func FormRun(form Component) ExitStruct {
-    // panic
     var es ExitStruct
     C.newtFormRun(form.c, &es.es)
     return es
