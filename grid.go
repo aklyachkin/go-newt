@@ -17,6 +17,7 @@ import (
 func CreateGrid(cols, rows int) Component {
     var c Component
     c.g = C.newtCreateGrid(C.int(cols), C.int(rows))
+    c.t = GRID_SUBGRID
     return c
 }
 
@@ -39,12 +40,14 @@ func GridHCloseStacked(typ uint32, what uintptr) Component {
 func GridBasicWindow(text, middle, buttons Component) Component {
     var c Component
     c.g = C.newtGridBasicWindow(text.c, middle.g, buttons.g)
+    c.t = GRID_SUBGRID
     return c
 }
 
 func GridSimpleWindow(text, middle, buttons Component) Component {
     var c Component
     c.g = C.newtGridSimpleWindow(text.c, middle.c, buttons.g)
+    c.t = GRID_SUBGRID
     return c
 }
 

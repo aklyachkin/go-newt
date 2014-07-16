@@ -20,6 +20,7 @@ func CompactButton(left, top int, text string) Component {
     defer C.free(unsafe.Pointer(t))
     a := C.newtCompactButton(C.int(left), C.int(top), t)
     c.c = a
+    c.t = GRID_COMPONENT
     return c
 }
 
@@ -29,6 +30,7 @@ func Button(left, top int, text string) Component {
     defer C.free(unsafe.Pointer(t))
     a := C.newtButton(C.int(left), C.int(top), t)
     c.c = a
+    c.t = GRID_COMPONENT
     return c
 }
 

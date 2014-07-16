@@ -27,6 +27,7 @@ func Checkbox(left, top int, text string, defValue, seq string, result *ResultSt
     defer C.free(unsafe.Pointer(t))
     defer C.free(unsafe.Pointer(s))
     c.c = C.newtCheckbox(C.int(left), C.int(top), t, C.char(defValue[0]), s, result.value)
+    c.t = GRID_COMPONENT
     return c
 }
 
@@ -52,12 +53,14 @@ func Radiobutton(left, top int, text string, isDefault int, prevButton *Componen
     } else {
         c.c = C.newtRadiobutton(C.int(left), C.int(top), t, C.int(isDefault), prevButton.c)
     }
+    c.t = GRID_COMPONENT
     return c
 }
 
 func RadioGetCurrent(setMember Component) Component {
     var c Component
     c.c = C.newtRadioGetCurrent(setMember.c)
+    c.t = GRID_COMPONENT
     return c
 }
 

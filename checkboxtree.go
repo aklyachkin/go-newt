@@ -17,6 +17,7 @@ import (
 func CheckboxTree(left, top, height, flags int) Component {
     var c Component
     c.c = C.newtCheckboxTree(C.int(left), C.int(top), C.int(height), C.int(flags))
+    c.t = GRID_COMPONENT
     return c
 }
 
@@ -25,6 +26,7 @@ func CheckboxTreeMulti(left, top, height int, seq string, flags int) Component {
     s := C.CString(seq)
     defer C.free(unsafe.Pointer(s))
     c.c = C.newtCheckboxTreeMulti(C.int(left), C.int(top), C.int(height), s, C.int(flags))
+    c.t = GRID_COMPONENT
     return c
 }
 

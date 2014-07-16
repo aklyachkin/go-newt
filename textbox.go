@@ -19,12 +19,14 @@ func TextboxReflowed(left, top int, text string, width, flexDown, flexUp, flags 
     defer C.free(unsafe.Pointer(t))
     var c Component
     c.c = C.newtTextboxReflowed(C.int(left), C.int(top), t, C.int(width), C.int(flexDown), C.int(flexUp), C.int(flags))
+    c.t = GRID_COMPONENT
     return c
 }
 
 func Textbox(left, top, width, height, flags int) Component {
     var c Component
     c.c = C.newtTextbox(C.int(left), C.int(top), C.int(width), C.int(height), C.int(flags))
+    c.t = GRID_COMPONENT
     return c
 }
 

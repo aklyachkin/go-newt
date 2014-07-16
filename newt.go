@@ -202,6 +202,7 @@ type Colors struct {
 }
 
 type Component struct {
+    t uint32
     c C.newtComponent
     g C.newtGrid
 }

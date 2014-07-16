@@ -19,6 +19,7 @@ func Label(left, top int, text string) Component {
     t := C.CString(text)
     defer C.free(unsafe.Pointer(t))
     c.c = C.newtLabel(C.int(left), C.int(top), t)
+    c.t = GRID_COMPONENT
     return c
 }
 

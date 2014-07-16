@@ -23,6 +23,7 @@ func Form(vertBar *Component, helpTag string, flags int) Component {
     } else {
         c.c = C.newtForm(nil, unsafe.Pointer(t), C.int(flags))
     }
+    c.t = GRID_COMPONENT
     return c
 }
 
@@ -41,6 +42,7 @@ func FormSetSize(c Component) {
 func FormGetCurrent(form Component) Component {
     var c Component
     c.c = C.newtFormGetCurrent(form.c)
+    c.t = GRID_COMPONENT
     return c
 }
 
@@ -74,6 +76,7 @@ func FormSetWidth(c Component, width int) {
 func RunForm(form Component) Component {
     var c Component
     c.c = C.newtRunForm(form.c)
+    c.t = GRID_COMPONENT
     return c
 }
 

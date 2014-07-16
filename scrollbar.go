@@ -13,6 +13,7 @@ import "C"
 func VerticalScrollbar(left, top, height, normalColorset, thumbColorset int) Component {
     var c Component
     c.c = C.newtVerticalScrollbar(C.int(left), C.int(top), C.int(height), C.int(normalColorset), C.int(thumbColorset))
+    c.t = GRID_COMPONENT
     return c
 }
 

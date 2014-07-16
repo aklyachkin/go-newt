@@ -18,6 +18,7 @@ import (
 func Listbox(left, top, height, flags int) Component {
     var c Component
     c.c = C.newtListbox(C.int(left), C.int(top), C.int(height), C.int(flags))
+    c.t = GRID_COMPONENT
     return c
 }
 

@@ -19,6 +19,7 @@ func Entry(left, top int, initialValue string, width int, result *ResultStr, fla
     iv := C.CString(initialValue)
     defer C.free(unsafe.Pointer(iv))
     c.c = C.newtEntry(C.int(left), C.int(top), iv, C.int(width), (**C.char)(&result.value), C.int(flags))
+    c.t = GRID_COMPONENT
     return c
 }
 
