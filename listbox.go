@@ -22,8 +22,8 @@ func Listbox(left, top, height, flags int) Component {
 }
 
 func ListboxGetCurrent(c Component) uintptr {
-    bptr := C.newtListboxGetCurrent(c.c)
-    return uintptr(bptr)
+    data := uintptr(C.newtListboxGetCurrent(c.c))
+    return data
 }
 
 func ListboxSetCurrent(c Component, num int) {
