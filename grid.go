@@ -21,20 +21,54 @@ func CreateGrid(cols, rows int) Component {
     return c
 }
 
-func GridVStacked(typ uint32, what uintptr) Component {
-    panic("not implemented")
+func stackem(isVert, close1 bool, comps ...Component) Component {
+    num := len(comps)
+    var grid Component
+    if isVert {
+        grid = CreateGrid(1, num)
+    } else {
+        grid = CreateGrid(num, 1)
+    }
+
+    for i, v := range comps {
+        var row, col, padLeft, padRight int
+        if isVert {
+            row = i
+            col = 0
+            padLeft = 0
+            padRight = 0
+            if !close1 && i != 0 {
+                padRight = 1
+            }
+        } else {
+            row = 0
+            col = i
+            padLeft = 0
+            padRight = 0
+            if !close1 && i != 0 {
+                padLeft = 1
+            }
+        }
+        GridSetField(grid, col, row, v.t, v, padLeft, padRight, 0, 0, 0, 0)
+    }
+
+    return grid
 }
 
-func GridVCloseStacked(typ uint32, what uintptr) Component {
-    panic("not implemented")
+func GridVStacked(comps ...Component) Component {
+    return stackem(true, false, comps...)
 }
 
-func GridHStacked(typ uint32, what uintptr) Component {
-    panic("not implemented")
+func GridVCloseStacked(comps ...Component) Component {
+    return stackem(true, true, comps...)
 }
 
-func GridHCloseStacked(typ uint32, what uintptr) Component {
-    panic("not implemented")
+func GridHStacked(comps ...Component) Component {
+    return stackem(false, false, comps...)
+}
+
+func GridHCloseStacked(comps ...Component) Component {
+    return stackem(false, true, comps...)
 }
 
 func GridBasicWindow(text, middle, buttons Component) Component {
