@@ -26,10 +26,6 @@ func WinMessage(title, buttonText, text string) {
     C.newtWinMessage(t1, b1, t2)
 }
 
-func WinMessageV(title, buttonText, text string) {
-    panic("not implemented")
-}
-
 func WinChoice(title, button1, button2, text string) int {
     t1 := C.CString(title)
     b1 := C.CString(button1)
