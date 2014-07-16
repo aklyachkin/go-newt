@@ -71,13 +71,11 @@ func WinMenu(title, text string, suggestedWidth, flexDown, flexUp, maxListHeight
     }
 
     listbox := Listbox(-1, -1, maxListHeight, needScroll | FLAG_RETURNEXIT);
+    values := make([]C.int, len(items))
     for i, v := range items {
-        u := uint(i)
-        ListboxAddEntry(listbox, v, uintptr(unsafe.Pointer(&u)))
+        values[i] = C.int(i)
+        ListboxAddEntry(listbox, v, uintptr(unsafe.Pointer(&values[i])))
     }
-
-    var listItem int
-    ListboxSetCurrent(listbox, listItem)
 
     buttons := make([]Component, len(button1))
     buttonBar := CreateGrid(len(button1), 1)
@@ -98,7 +96,7 @@ func WinMenu(title, text string, suggestedWidth, flexDown, flexUp, maxListHeight
     result := RunForm(form)
     listItemPtr := ListboxGetCurrent(listbox)
     listItemC := *(*C.int)(unsafe.Pointer(listItemPtr))
-    listItem = int(listItemC)
+    listItem := int(listItemC)
 
     rc := 0
     for i, _ := range(buttons) {
