@@ -177,6 +177,24 @@ const (         // newtGridElement
     GRID_SUBGRID
 )
 
+const (         // component types
+    CMP_NONE = iota
+    CMP_BUTTON
+    CMP_BUTTONBAR
+    CMP_CHECKBOX
+    CMP_CHECKBOXTREE
+    CMP_COMPACTBUTTON
+    CMP_ENTRY
+    CMP_FORM
+    CMP_GRID
+    CMP_LABEL
+    CMP_LISTBOX
+    CMP_RADIOBUTTON
+    CMP_SCALE
+    CMP_SCROLLBAR
+    CMP_TEXTBOX
+)
+
 type Colors struct {
     rootFg, rootBg string
     borderFg, borderBg string
@@ -203,6 +221,7 @@ type Colors struct {
 
 type Component struct {
     t uint32
+    ct uint32
     c C.newtComponent
     g C.newtGrid
 }
