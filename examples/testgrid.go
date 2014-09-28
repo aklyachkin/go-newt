@@ -10,7 +10,7 @@ func main() {
 
     r := newt.NewResultStr()
 
-    b1 := newt.Checkbox(-1, -1, "A pretty long checkbox for testing", " ", "", r)
+    b1 := newt.Checkbox(-1, -1, "A pretty long checkbox for testing", " ", "", &r)
     b2 := newt.Button(-1, -1, "Another button")
     b3 := newt.Button(-1, -1, "But, but")
     b4 := newt.Button(-1, -1, "But what?")
