@@ -24,6 +24,8 @@ func ButtonBar(bbar ...*TButtonbar) Component {
         GridSetField(grid, i, 0, GRID_COMPONENT, bbar[i].button, 1, 0, 0, 0, 0, 0)
     }
 
+    grid.ct = CMP_BUTTONBAR
+
     return grid
 }
 

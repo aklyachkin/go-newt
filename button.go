@@ -21,6 +21,7 @@ func CompactButton(left, top int, text string) Component {
     a := C.newtCompactButton(C.int(left), C.int(top), t)
     c.c = a
     c.t = GRID_COMPONENT
+    c.ct = CMP_COMPACTBUTTON
     return c
 }
 
@@ -31,6 +32,7 @@ func Button(left, top int, text string) Component {
     a := C.newtButton(C.int(left), C.int(top), t)
     c.c = a
     c.t = GRID_COMPONENT
+    c.ct = CMP_BUTTON
     return c
 }
 
