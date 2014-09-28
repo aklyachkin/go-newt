@@ -66,13 +66,13 @@ func FormSetBackground(c Component, color int) {
 }
 
 func FormSetCurrent(form, c Component) {
-    if c.ct == CMP_FORM {
+    if form.ct == CMP_FORM {
         C.newtFormSetCurrent(form.c, c.c)
     }
 }
 
 func FormAddComponent(form, c Component) {
-    if c.ct == CMP_FORM {
+    if form.ct == CMP_FORM {
         C.newtFormAddComponent(form.c, c.c)
     }
 }
