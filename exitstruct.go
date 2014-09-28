@@ -1,8 +1,8 @@
 package newt
 
 /*
-#cgo CFLAGS: -I/opt/local/include
-#cgo LDFLAGS: -L/opt/local/lib
+#cgo pkg-config: libnewt
+#cgo LDFLAGS: -lnewt
 
 #include <newt.h>
 */

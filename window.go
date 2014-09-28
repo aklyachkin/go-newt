@@ -1,12 +1,24 @@
 package newt
 
 /*
-#cgo CFLAGS: -I/opt/local/include
-#cgo LDFLAGS: -L/opt/local/lib -lnewt
+#cgo pkg-config: libnewt
+#cgo LDFLAGS: -lnewt
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <newt.h>
+
+void nNewtWinMessage(char *title, char *buttonText, char *text) {
+    newtWinMessage(title, buttonText, text);
+}
+
+int nNewtWinChoice(char *title, char *button1, char *button2, char *message) {
+    return newtWinChoice(title, button1, button2, message);
+}
+
+int nNewtWinTernary(char *title, char *button1, char *button2, char *button3, char *message) {
+    return newtWinTernary(title, button1, button2, button3, message);
+}
 */
 import "C"
 
@@ -23,7 +35,7 @@ func WinMessage(title, buttonText, text string) {
         C.free(unsafe.Pointer(b1))
         C.free(unsafe.Pointer(t2))
     }()
-    C.newtWinMessage(t1, b1, t2)
+    C.nNewtWinMessage(t1, b1, t2)
 }
 
 func WinChoice(title, button1, button2, text string) int {
@@ -37,7 +49,7 @@ func WinChoice(title, button1, button2, text string) int {
         C.free(unsafe.Pointer(b2))
         C.free(unsafe.Pointer(t2))
     }()
-    return int(C.newtWinChoice(t1, b1, b2, t2))
+    return int(C.nNewtWinChoice(t1, b1, b2, t2))
 }
 
 func WinTernary(title, button1, button2, button3, message string) int {
@@ -53,7 +65,7 @@ func WinTernary(title, button1, button2, button3, message string) int {
         C.free(unsafe.Pointer(b3))
         C.free(unsafe.Pointer(m1))
     }()
-    return int(C.newtWinTernary(t1, b1, b2, b3, m1))
+    return int(C.nNewtWinTernary(t1, b1, b2, b3, m1))
 }
 
 func WinMenu(title, text string, suggestedWidth, flexDown, flexUp, maxListHeight int, items []string, button1 ...string) (int, int) {
