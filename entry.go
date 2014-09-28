@@ -1,8 +1,8 @@
 package newt
 
 /*
-#cgo CFLAGS: -I/opt/local/include
-#cgo LDFLAGS: -L/opt/local/lib -lnewt
+#cgo pkg-config: libnewt
+#cgo LDFLAGS: -lnewt
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,13 +20,16 @@ func Entry(left, top int, initialValue string, width int, result *ResultStr, fla
     defer C.free(unsafe.Pointer(iv))
     c.c = C.newtEntry(C.int(left), C.int(top), iv, C.int(width), (**C.char)(&result.value), C.int(flags))
     c.t = GRID_COMPONENT
+    c.ct = CMP_ENTRY
     return c
 }
 
 func EntrySet(c Component, value string, cursorAtEnd int) {
-    t := C.CString(value)
-    defer C.free(unsafe.Pointer(t))
-    C.newtEntrySet(c.c, t, C.int(cursorAtEnd))
+    if c.ct == CMP_ENTRY {
+        t := C.CString(value)
+        defer C.free(unsafe.Pointer(t))
+        C.newtEntrySet(c.c, t, C.int(cursorAtEnd))
+    }
 }
 
 func EntrySetFilter(c Component, filter uintptr, data []byte) {
@@ -34,24 +37,38 @@ func EntrySetFilter(c Component, filter uintptr, data []byte) {
 }
 
 func EntryGetValue(c Component) string {
-    r := C.newtEntryGetValue(c.c)
-    defer C.free(unsafe.Pointer(r))
-    return C.GoString(r)
+    if c.ct == CMP_ENTRY {
+        r := C.newtEntryGetValue(c.c)
+        defer C.free(unsafe.Pointer(r))
+        return C.GoString(r)
+    } else {
+        return ""
+    }
 }
 
 func EntrySetFlags(c Component, flags int, sense uint32) {
-    C.newtEntrySetFlags(c.c, C.int(flags), sense)
+    if c.ct == CMP_ENTRY {
+        C.newtEntrySetFlags(c.c, C.int(flags), sense)
+    }
 }
 
 func EntrySetColors(c Component, normal, disabled int) {
-    C.newtEntrySetColors(c.c, C.int(normal), C.int(disabled))
+    if c.ct == CMP_ENTRY {
+        C.newtEntrySetColors(c.c, C.int(normal), C.int(disabled))
+    }
 }
 
 func EntryGetCursorPosition(c Component) int {
-    return int(C.newtEntryGetCursorPosition(c.c))
+    if c.ct == CMP_ENTRY {
+        return int(C.newtEntryGetCursorPosition(c.c))
+    } else {
+        return -1
+    }
 }
 
 func EntrySetCursorPosition(c Component, position int) {
-    C.newtEntrySetCursorPosition(c.c, C.int(position))
+    if c.ct == CMP_ENTRY {
+        C.newtEntrySetCursorPosition(c.c, C.int(position))
+    }
 }
 

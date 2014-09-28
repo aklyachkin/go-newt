@@ -1,8 +1,8 @@
 package newt
 
 /*
-#cgo CFLAGS: -I/opt/local/include
-#cgo LDFLAGS: -L/opt/local/lib -lnewt
+#cgo pkg-config: libnewt
+#cgo LDFLAGS: -lnewt
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,6 +23,8 @@ func ButtonBar(bbar ...*TButtonbar) Component {
         bbar[i].button = Button(-1, -1, bbar[i].text)
         GridSetField(grid, i, 0, GRID_COMPONENT, bbar[i].button, 1, 0, 0, 0, 0, 0)
     }
+
+    grid.ct = CMP_BUTTONBAR
 
     return grid
 }
