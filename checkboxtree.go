@@ -7,6 +7,10 @@ package newt
 #include <stdio.h>
 #include <stdlib.h>
 #include <newt.h>
+
+int nNewtCheckboxTreeAddItem(newtComponent co, const char *text, const void *data, int flags, int index) {
+    return newtCheckboxTreeAddItem(co, text, data, flags, index);
+}
 */
 import "C"
 
@@ -73,8 +77,7 @@ func CheckboxTreeAddItem(c Component, text string, data uintptr, flags int, inde
     if c.ct == CMP_CHECKBOXTREE {
         t := C.CString(text)
         defer C.free(unsafe.Pointer(t))
-        i := C.newtCheckboxTreeAddItem(c.c, t, unsafe.Pointer(data), C.int(flags), C.int(index))
-        return int(i)
+        return int(C.nNewtCheckboxTreeAddItem(c.c, t, unsafe.Pointer(data), C.int(flags), C.int(index)))
     } else {
         return -1
     }
