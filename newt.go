@@ -452,3 +452,18 @@ func ComponentDestroy(c Component) {
     C.newtComponentDestroy(c.c)
 }
 
+func (c *Component) Equals(co *Component) bool {
+    if c.t != CMP_GRID {
+        if c.c == co.c {
+            return true
+        } else {
+            return false
+        }
+    } else {
+        if c.g == co.g {
+            return true
+        } else {
+            return false
+        }
+    }
+}

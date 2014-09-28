@@ -11,7 +11,7 @@ func main() {
 
     cbValue := newt.NewResultStr()
 
-    checkbox := newt.Checkbox(1, 1, "A checkbox", " ", " *X", cbValue)
+    checkbox := newt.Checkbox(1, 1, "A checkbox", " ", " *X", &cbValue)
 
     rb := make([]newt.Component, 3)
     rb[0] = newt.Radiobutton(1, 3, "Choice 1", 1, nil)

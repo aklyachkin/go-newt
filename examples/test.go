@@ -46,7 +46,7 @@ func main() {
     cs := make([]newt.Component, 10)
     for i := range cs {
         buf := fmt.Sprintf("Check %d", i)
-        cs[i] = newt.Checkbox(3, 10 + i, buf, " ", "", results[i])
+        cs[i] = newt.Checkbox(3, 10 + i, buf, " ", "", &(results[i]))
         newt.FormAddComponent(chklist, cs[i])
     }
 
@@ -97,11 +97,12 @@ func main() {
     spinner := "-\\|/"
     i := 0
     es := newt.FormRun(f)
-    for es.Component() != b1 {
+    c := es.Component()
+    for !c.Equals(&b1) {
 
         switch es.Reason() {
         case newt.EXIT_COMPONENT:
-            if es.Component() == b2 {
+            if c.Equals(&b2) {
                 sv, err := strconv.Atoi(scaleVal.String())
                 if err == nil {
                     newt.ScaleSet(scale, uint64(sv))
@@ -116,6 +117,7 @@ func main() {
             newt.LabelSetText(timeLabel, "Spinner: " + string(spinner[i]))
         }
         es = newt.FormRun(f)
+        c = es.Component()
     }
 
     numsel, selectedList := newt.ListboxGetSelection(lb)
